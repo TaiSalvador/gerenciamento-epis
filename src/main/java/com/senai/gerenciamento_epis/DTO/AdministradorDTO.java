@@ -1,4 +1,4 @@
-package DTO;
+package com.senai.gerenciamento_epis.DTO;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

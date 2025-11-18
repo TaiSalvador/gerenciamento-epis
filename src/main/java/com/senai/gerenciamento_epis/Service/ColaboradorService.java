@@ -1,10 +1,10 @@
-package Service;
+package com.senai.gerenciamento_epis.Service;
 
 
-import DTO.ColaboradorDTO;
-import Entity.ColaboradorEntity;
-import Repo.ColaboradorRepository;
-import Repo.EpiRepository;
+import com.senai.gerenciamento_epis.DTO.ColaboradorDTO;
+import com.senai.gerenciamento_epis.Entity.ColaboradorEntity;
+import com.senai.gerenciamento_epis.Repo.ColaboradorRepository;
+import com.senai.gerenciamento_epis.Repo.EpiRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,6 +64,9 @@ public class ColaboradorService {
 
         ColaboradorEntity colaboradorEntity = colaboradorRepository.findById(id).orElseThrow(()  -> new RuntimeException("Colaborador não existe"));
 
-        
+        colaboradorEntity.setNmColaborador(colaboradorDTO.getNmColaborador());
+
+        colaboradorRepository.save(colaboradorEntity);
+
     }
 }

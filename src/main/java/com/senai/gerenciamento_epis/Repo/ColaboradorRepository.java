@@ -1,9 +1,7 @@
-package Repo;
+package com.senai.gerenciamento_epis.Repo;
 
-import Entity.ColaboradorEntity;
+import com.senai.gerenciamento_epis.Entity.ColaboradorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 public interface ColaboradorRepository extends JpaRepository<ColaboradorEntity, Integer> {
 

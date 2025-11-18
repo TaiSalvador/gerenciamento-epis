@@ -1,4 +1,4 @@
-package Entity;
+package com.senai.gerenciamento_epis.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

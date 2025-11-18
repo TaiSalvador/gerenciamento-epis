@@ -1,8 +1,8 @@
-package Controller;
+package com.senai.gerenciamento_epis.Controller;
 
 
-import Service.ColaboradorService;
-import Service.EpisService;
+import com.senai.gerenciamento_epis.Service.ColaboradorService;
+import com.senai.gerenciamento_epis.Service.EpisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
