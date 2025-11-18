@@ -64,6 +64,6 @@ public class ColaboradorService {
 
         ColaboradorEntity colaboradorEntity = colaboradorRepository.findById(id).orElseThrow(()  -> new RuntimeException("Colaborador não existe"));
 
-        
+
     }
 }
