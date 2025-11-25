@@ -1,27 +1,42 @@
 package com.senai.gerenciamento_epis.Entity;
 
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "Emprestimo")
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "emprestimo")
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class EmprestimoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_Empretimo")
-    private int idEmprestimo;
+    @Column(name = "id_emprestimo")
+    private Integer id;
 
-    @Column(name = "nm_Emprestimo")
-    private String nmEmprestimo;
+    @ManyToOne
+    @JoinColumn(name = "id_colaborador", nullable = false)
+    private ColaboradorEntity colaborador;
 
+    @ManyToOne
+    @JoinColumn(name = "id_epi", nullable = false)
+    private EpiEntity epi;
+
+    @Column(name = "data_emprestimo")
+    private LocalDateTime dataEmprestimo;
+
+    @Column(name = "data_prevista_devolucao")
+    private LocalDate dataPrevistaDevolucao;
+
+    @Column(name = "data_devolucao")
+    private LocalDateTime dataDevolucao;
+
+    @Column(nullable = false)
+    private String status;
+
+    private String observacao;
 }

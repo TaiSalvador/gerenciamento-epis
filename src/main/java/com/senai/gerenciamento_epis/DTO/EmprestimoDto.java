@@ -1,22 +1,28 @@
 package com.senai.gerenciamento_epis.DTO;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
-
 public class EmprestimoDto {
 
-    private int idEmprestimo;
+    private Integer idEmprestimo;
 
-    @NotBlank(message = "Nome do emprestimo naão pode esta vazio")
-    @Size(max = 50, message = "Nome do emprestimo não pode ultrapassar 50 caracteres")
-    private String nmEmpretimo;
+    private Integer idColaborador;
 
+    private Integer idEpi;
 
+    private LocalDateTime dataEmprestimo;
+
+    private LocalDate dataPrevistaDevolucao;
+
+    private LocalDateTime dataDevolucao;
+
+    private String status;
+
+    private String observacao;
 }
