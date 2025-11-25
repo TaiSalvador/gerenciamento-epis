@@ -14,9 +14,9 @@ public class EmprestimoDto {
 
     private int idEmprestimo;
 
-    @NotBlank(message = "")
-    @Size(max = 50, message = "Colaborador não pode ultrapassar 50 caracteres")
-    private String nmColaborador;
+    @NotBlank(message = "Nome do emprestimo naão pode esta vazio")
+    @Size(max = 50, message = "Nome do emprestimo não pode ultrapassar 50 caracteres")
+    private String nmEmpretimo;
 
 
 }
