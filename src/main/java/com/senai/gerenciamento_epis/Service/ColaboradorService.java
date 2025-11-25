@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -68,4 +69,19 @@ public class ColaboradorService {
         colaboradorRepository.save(colaboradorEntity);
 
     }
+
+    public void deletarColaborador(int id){
+
+        colaboradorRepository.findById(id).orElseThrow(() -> new RuntimeException("cColaborador não existe"));
+
+        if (colaboradorRepository.existsById(id)){
+            throw new RuntimeException("Não pode deletar departamentos com colaborador");
+
+        }
+
+        colaboradorRepository.deleteAllById(Collections.singleton(id));
+
+    }
+
+
 }
