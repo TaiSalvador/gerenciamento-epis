@@ -1,22 +1,20 @@
 package com.senai.gerenciamento_epis.Service;
 
-
 import com.senai.gerenciamento_epis.DTO.ColaboradorDTO;
 import com.senai.gerenciamento_epis.Entity.ColaboradorEntity;
 import com.senai.gerenciamento_epis.Repo.ColaboradorRepository;
 import com.senai.gerenciamento_epis.Repo.EpiRepository;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
 @Validated
-
 public class ColaboradorService {
 
     @Autowired
@@ -25,63 +23,56 @@ public class ColaboradorService {
     @Autowired
     private EpiRepository epiRepository;
 
-    //CRUD
-
     // Create
 
     public void cadastrarColaborador(@Valid ColaboradorDTO colaboradorDTO) {
 
         ColaboradorEntity colaboradorEntity = new ColaboradorEntity();
 
-        colaboradorEntity.setNmColaborador(colaboradorEntity.getNmColaborador());
+        colaboradorEntity.setNome(colaboradorDTO.getNmColaborador());
 
         colaboradorRepository.save(colaboradorEntity);
     }
 
-    //Read
+    // Read
 
-    public List<ColaboradorDTO> listaColaboradores() {
+    public List<ColaboradorDTO> listarColaboradores() {
+
         List<ColaboradorEntity> listaColaboradorEntity = colaboradorRepository.findAll();
-
-        List<ColaboradorDTO> listaColaboradorDto = new ArrayList<>();
+        List<ColaboradorDTO> listaColaboradorDTO = new ArrayList<>();
 
         for (ColaboradorEntity c : listaColaboradorEntity) {
 
             ColaboradorDTO colaboradorDTO = new ColaboradorDTO();
 
-            colaboradorDTO.setIdColaborador(c.getIdColaborador());
+            colaboradorDTO.setIdColaborador(c.getId());
+            colaboradorDTO.setNmColaborador(c.getNome());
 
-            listaColaboradorDto.add(colaboradorDTO);
-
+            listaColaboradorDTO.add(colaboradorDTO);
         }
 
-        return listaColaboradorDto;
+        return listaColaboradorDTO;
     }
 
-    //Update
+    // Uptade
 
-    public void atualizarColaborador (int id, @Valid ColaboradorDTO colaboradorDTO) {
+    public void atualizarColaborador(int id, @Valid ColaboradorDTO colaboradorDTO) {
 
-        ColaboradorEntity colaboradorEntity = colaboradorRepository.findById(id).orElseThrow(()  -> new RuntimeException("Colaborador não existe"));
+        ColaboradorEntity colaboradorEntity = colaboradorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Colaborador não existe"));
 
-        colaboradorEntity.setNmColaborador(colaboradorDTO.getNmColaborador());
+        colaboradorEntity.setNome(colaboradorDTO.getNmColaborador());
 
         colaboradorRepository.save(colaboradorEntity);
-
     }
 
-    public void deletarColaborador(int id){
+    // Delete
 
-        colaboradorRepository.findById(id).orElseThrow(() -> new RuntimeException("cColaborador não existe"));
+    public void deletarColaborador(int id) {
 
-        if (colaboradorRepository.existsById(id)){
-            throw new RuntimeException("Não pode deletar departamentos com colaborador");
+        ColaboradorEntity colaboradorEntity = colaboradorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Colaborador não existe"));
 
-        }
-
-        colaboradorRepository.deleteAllById(Collections.singleton(id));
-
+        colaboradorRepository.deleteById(id);
     }
-
-
 }

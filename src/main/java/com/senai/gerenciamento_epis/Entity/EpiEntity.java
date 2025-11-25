@@ -1,26 +1,28 @@
 package com.senai.gerenciamento_epis.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Table (name = "epis")
+import java.time.LocalDate;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-
-
+@Entity
+@Table(name = "epi")
+@Data
 public class EpiEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_epis")
-    private int id_epis;
+    @Column(name = "id_epi")
+    private Integer id;
 
-    @Column (name = "nm_epis")
-    private String nm_epis;
+    @Column(name = "nome_epi")
+    private String nomeEpi;
 
+    @Column(name = "tipo_epi")
+    private String tipoEpi;
+
+    private String descricao;
+    private String tamanho;
+    private LocalDate validade;
+    private String situacao;
 }

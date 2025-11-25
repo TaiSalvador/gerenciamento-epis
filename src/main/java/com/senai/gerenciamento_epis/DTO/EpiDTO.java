@@ -1,10 +1,8 @@
 package com.senai.gerenciamento_epis.DTO;
 
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 @Getter
 @Setter
@@ -13,11 +11,24 @@ import org.springframework.stereotype.Service;
 @ToString
 public class EpiDTO {
 
-    @NotBlank(message = "Nome do Epi não pode ser vazio")
-    @Size(max = 100, message = "Nome do Epi não pode ultrapassar 100 caracteres")
-    private String nome;
+    private int idEpi;
 
+    @NotBlank(message = "Nome do EPI não pode ser vazio")
+    @Size(max = 120, message = "O nome do EPI não pode ultrapassar 120 caracteres")
+    private String nmEpi;
 
+    @NotBlank(message = "Tipo do EPI não pode ser vazio")
+    @Size(max = 80, message = "O tipo do EPI não pode ultrapassar 80 caracteres")
+    private String tipoEpi;
 
+    @Size(max = 255, message = "A descrição não pode ultrapassar 255 caracteres")
+    private String descricao;
+
+    @Size(max = 20, message = "O tamanho não pode ultrapassar 20 caracteres")
+    private String tamanho;
+
+    private String validade;
+
+    @NotBlank(message = "Situação do EPI é obrigatória")
+    private String situacao;
 }
-

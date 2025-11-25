@@ -2,26 +2,33 @@ package com.senai.gerenciamento_epis.Entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "colaborador")
+@Data
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 
 public class ColaboradorEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_colaborador")
-    private int idColaborador;
+    private Integer id;
 
-    @Column(name = "nm_colaborador")
-    private String nmColaborador;
+    private String nome;
+
+    @Column(length = 11, nullable = false)
+    private String cpf;
+
+    private String cargo;
+    private String setor;
+
+    @Column(name = "data_admissao")
+    private LocalDate dataAdmissao;
+
+    @Column(name = "status_ativo")
+    private Boolean statusAtivo;
 }
