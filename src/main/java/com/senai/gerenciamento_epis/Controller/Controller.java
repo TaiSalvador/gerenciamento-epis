@@ -1,14 +1,18 @@
 package com.senai.gerenciamento_epis.Controller;
 
-import com.senai.gerenciamento_epis.Service.ColaboradorService;
-import com.senai.gerenciamento_epis.Service.EpisService;
 import com.senai.gerenciamento_epis.DTO.ColaboradorDTO;
 import com.senai.gerenciamento_epis.DTO.EpiDTO;
+import com.senai.gerenciamento_epis.DTO.EmprestimoDto;
+import com.senai.gerenciamento_epis.Service.ColaboradorService;
+import com.senai.gerenciamento_epis.Service.EpisService;
+import com.senai.gerenciamento_epis.Service.EmprestimoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 @Component
@@ -20,196 +24,254 @@ public class Controller implements CommandLineRunner {
     @Autowired
     private EpisService episService;
 
+    @Autowired
+    private EmprestimoService emprestimoService;
+
+
     @Override
     public void run(String... args) throws Exception {
 
-        Scanner input = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         int opcao;
 
-        System.out.println("\n=== Sistema de Gestão de EPIs ===");
-
         do {
-            exibirMenu();
-            opcao = input.nextInt();
+            System.out.println("\n=== MENU GERENCIAMENTO EPIs ===");
+            System.out.println("1 - Gerenciar Colaboradores");
+            System.out.println("2 - Gerenciar EPIs");
+            System.out.println("3 - Gerenciar Empréstimos");
+            System.out.println("0 - Sair");
+            System.out.print("Escolha uma opção: ");
+            opcao = sc.nextInt();
+            sc.nextLine();
 
-            try {
-                switch (opcao) {
-                    case 1 -> cadastrarColaborador();
-                    case 2 -> listarColaboradores();
-                    case 3 -> atualizarColaborador();
-                    case 4 -> deletarColaborador();
+            switch (opcao) {
 
-                    case 5 -> cadastrarEpi();
-                    case 6 -> listarEpis();
-                    case 7 -> atualizarEpi();
-                    case 8 -> deletarEpi();
+                case 1:
+                    menuColaborador(sc);
+                    break;
 
-                    case 0 -> System.out.println("Saindo...");
-                    default -> System.out.println("Opção inválida!");
-                }
+                case 2:
+                    menuEpi(sc);
+                    break;
 
-            } catch (Exception e) {
-                System.out.println("Erro: " + e.getMessage());
+                case 3:
+                    menuEmprestimo(sc);
+                    break;
+
+                case 0:
+                    System.out.println("Encerrando sistema...");
+                    break;
+
+                default:
+                    System.out.println("Opção inválida!");
             }
 
         } while (opcao != 0);
-
     }
 
+    // ================================
+    //           MENU COLABORADOR
+    // ================================
+    private void menuColaborador(Scanner sc) {
 
-    // ================= MENU ==================
+        int opcao;
 
-    private void exibirMenu() {
-        System.out.println("""
+        do {
+            System.out.println("\n--- MENU COLABORADOR ---");
+            System.out.println("1 - Cadastrar");
+            System.out.println("2 - Listar");
+            System.out.println("3 - Atualizar");
+            System.out.println("4 - Deletar");
+            System.out.println("0 - Voltar");
+            System.out.print("Opção: ");
+            opcao = sc.nextInt();
+            sc.nextLine();
 
-                ===== MENU =====
-                1 - Cadastrar Colaborador
-                2 - Listar Colaboradores
-                3 - Atualizar Colaborador
-                4 - Deletar Colaborador
+            switch (opcao) {
 
-                5 - Cadastrar EPI
-                6 - Listar EPIs
-                7 - Atualizar EPI
-                8 - Deletar EPI
+                case 1 -> {
+                    ColaboradorDTO c = new ColaboradorDTO();
 
-                0 - Sair
-                """);
-        System.out.print("Escolha: ");
+                    System.out.print("Nome: ");
+                    c.setNmColaborador(sc.nextLine());
+
+                    System.out.print("CPF (11 dígitos): ");
+                    c.setCpf(sc.nextLine());
+
+                    System.out.print("Cargo: ");
+                    c.setCargo(sc.nextLine());
+
+                    System.out.print("Setor: ");
+                    c.setSetor(sc.nextLine());
+
+                    System.out.print("Data admissão (AAAA-MM-DD): ");
+                    c.setDataAdmissao(sc.nextLine());
+
+                    c.setStatusAtivo(true);
+
+                    colaboradorService.cadastrarColaborador(c);
+                }
+
+                case 2 -> {
+                    System.out.println(colaboradorService.listarColaboradores());
+                }
+
+                case 3 -> {
+                    System.out.print("ID: ");
+                    int id = sc.nextInt();
+                    sc.nextLine();
+
+                    ColaboradorDTO c = new ColaboradorDTO();
+
+                    System.out.print("Novo nome: ");
+                    c.setNmColaborador(sc.nextLine());
+
+                    colaboradorService.atualizarColaborador(id, c);
+                }
+
+                case 4 -> {
+                    System.out.print("ID: ");
+                    int id = sc.nextInt();
+                    colaboradorService.deletarColaborador(id);
+                }
+            }
+
+        } while (opcao != 0);
     }
 
+    // ================================
+    //             MENU EPI
+    // ================================
+    private void menuEpi(Scanner sc) {
 
-    // ====================== COLABORADORES ======================
+        int opcao;
 
-    private void cadastrarColaborador() {
-        Scanner sc = new Scanner(System.in);
+        do {
+            System.out.println("\n--- MENU EPI ---");
+            System.out.println("1 - Cadastrar");
+            System.out.println("2 - Listar");
+            System.out.println("3 - Atualizar");
+            System.out.println("4 - Deletar");
+            System.out.println("0 - Voltar");
+            System.out.print("Opção: ");
+            opcao = sc.nextInt();
+            sc.nextLine();
 
-        System.out.print("Nome: ");
-        String nome = sc.nextLine();
+            switch (opcao) {
 
-        System.out.print("CPF: ");
-        String CPF = sc.nextLine();
+                case 1 -> {
+                    EpiDTO e = new EpiDTO();
 
-        System.out.print("Cargo: ");
-        String cargo = sc.nextLine();
+                    System.out.print("Nome EPI: ");
+                    e.setNmEpi(sc.nextLine());
 
-        ColaboradorDTO dto = new ColaboradorDTO();
-        dto.setNmColaborador(nome);
-        dto.setCpf(CPF);
-        dto.setCargo(cargo);
+                    System.out.print("Tipo: ");
+                    e.setTipoEpi(sc.nextLine());
 
-        colaboradorService.cadastrarColaborador(dto);
-        System.out.println("Colaborador cadastrado!");
+                    System.out.print("Descrição: ");
+                    e.setDescricao(sc.nextLine());
+
+                    System.out.print("Tamanho: ");
+                    e.setTamanho(sc.nextLine());
+
+                    System.out.print("Validade (AAAA-MM-DD): ");
+                    e.setValidade(sc.nextLine());
+
+                    System.out.print("Situação: ");
+                    e.setSituacao(sc.nextLine());
+
+                    episService.cadastrarEpi(e);
+                }
+
+                case 2 -> System.out.println(episService.listarEpis());
+
+                case 3 -> {
+                    System.out.print("ID: ");
+                    int id = sc.nextInt();
+                    sc.nextLine();
+
+                    EpiDTO e = new EpiDTO();
+
+                    System.out.print("Novo nome: ");
+                    e.setNmEpi(sc.nextLine());
+
+                    episService.atualizarEpi(id, e);
+                }
+
+                case 4 -> {
+                    System.out.print("ID: ");
+                    int id = sc.nextInt();
+                    episService.deletarEpi(id);
+                }
+            }
+
+        } while (opcao != 0);
     }
 
+    // ================================
+    //          MENU EMPRESTIMO
+    // ================================
+    private void menuEmprestimo(Scanner sc) {
 
-    private void listarColaboradores() {
-        List<ColaboradorDTO> lista = colaboradorService.listarColaboradores();
+        int opcao;
 
-        if (lista.isEmpty()) {
-            System.out.println("Nenhum colaborador encontrado.");
-            return;
-        }
+        do {
+            System.out.println("\n--- MENU EMPRÉSTIMO ---");
+            System.out.println("1 - Cadastrar");
+            System.out.println("2 - Listar");
+            System.out.println("3 - Atualizar / Devolver");
+            System.out.println("4 - Deletar");
+            System.out.println("0 - Voltar");
+            System.out.print("Opção: ");
+            opcao = sc.nextInt();
+            sc.nextLine();
 
-        lista.forEach(System.out::println);
+            switch (opcao) {
+
+                case 1 -> {
+                    EmprestimoDto emp = new EmprestimoDto();
+
+                    System.out.print("ID Colaborador: ");
+                    emp.setIdColaborador(sc.nextInt());
+
+                    System.out.print("ID EPI: ");
+                    emp.setIdEpi(sc.nextInt());
+                    sc.nextLine();
+
+                    System.out.print("Data prevista devolução (AAAA-MM-DD): ");
+                    emp.setDataPrevistaDevolucao(LocalDate.parse(sc.nextLine()));
+
+                    System.out.print("Observação: ");
+                    emp.setObservacao(sc.nextLine());
+
+                    emprestimoService.cadastrar(emp);
+                }
+
+                case 2 -> System.out.println(emprestimoService.listar());
+
+                case 3 -> {
+                    System.out.print("ID Empréstimo: ");
+                    int id = sc.nextInt();
+                    sc.nextLine();
+
+                    EmprestimoDto e = new EmprestimoDto();
+
+                    System.out.println("EPI devolvido em: " + LocalDateTime.now());
+                    e.setDataDevolucao(LocalDateTime.now());
+
+                    System.out.print("Observação: ");
+                    e.setObservacao(sc.nextLine());
+
+                    emprestimoService.atualizar(id, e);
+                }
+
+                case 4 -> {
+                    System.out.print("ID Empréstimo: ");
+                    int id = sc.nextInt();
+                    emprestimoService.deletar(id);
+                }
+            }
+
+        } while (opcao != 0);
     }
-
-
-    private void atualizarColaborador() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("ID do colaborador: ");
-        int id = sc.nextInt();
-        sc.nextLine();
-
-        System.out.print("Novo nome: ");
-        String nome = sc.nextLine();
-
-        System.out.print("Novo cargo: ");
-        String cargo = sc.nextLine();
-
-        ColaboradorDTO dto = new ColaboradorDTO();
-        dto.setNmColaborador(nome);
-        dto.setCargo(cargo);
-
-        colaboradorService.atualizarColaborador(id, dto);
-        System.out.println("Colaborador atualizado!");
-    }
-
-
-    private void deletarColaborador() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("ID: ");
-        int id = sc.nextInt();
-
-        colaboradorService.deletarColaborador(id);
-        System.out.println("Colaborador removido.");
-    }
-
-
-    // ====================== EPIs ======================
-
-    private void cadastrarEpi() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Nome do EPI: ");
-        String nome = sc.nextLine();
-
-        System.out.print("Validade (em dias): ");
-        int validade = sc.nextInt();
-
-        EpiDTO dto = new EpiDTO();
-        dto.setNmEpi(nome);
-        dto.setValidade(String.valueOf(validade));
-
-        episService.cadastrarEpi(dto);
-        System.out.println("EPI cadastrado!");
-    }
-
-
-    private void listarEpis() {
-        List<EpiDTO> lista = episService.listarEpis();
-
-        if (lista.isEmpty()) {
-            System.out.println("Nenhum EPI encontrado.");
-            return;
-        }
-
-        lista.forEach(System.out::println);
-    }
-
-
-    private void atualizarEpi() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("ID do EPI: ");
-        int id = sc.nextInt();
-        sc.nextLine();
-
-        System.out.print("Novo nome: ");
-        String nome = sc.nextLine();
-
-        System.out.print("Nova validade (dias): ");
-        int validade = sc.nextInt();
-
-        EpiDTO dto = new EpiDTO();
-        dto.setNmEpi(nome);
-        dto.setValidade(String.valueOf(validade));
-
-        episService.atualizarEpi(id, dto);
-        System.out.println("EPI atualizado!");
-    }
-
-
-    private void deletarEpi() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("ID: ");
-        int id = sc.nextInt();
-
-        episService.deletarEpi(id);
-        System.out.println("EPI removido.");
-    }
-
 }

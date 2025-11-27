@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,59 +21,80 @@ public class ColaboradorService {
     @Autowired
     private ColaboradorRepository colaboradorRepository;
 
-    @Autowired
-    private EpiRepository epiRepository;
+    // CREATE
+    public void cadastrarColaborador(@Valid ColaboradorDTO dto) {
 
-    // Create
+        ColaboradorEntity entity = new ColaboradorEntity();
 
-    public void cadastrarColaborador(@Valid ColaboradorDTO colaboradorDTO) {
+        entity.setNome(dto.getNmColaborador());
+        entity.setCpf(dto.getCpf());
+        entity.setCargo(dto.getCargo());
+        entity.setSetor(dto.getSetor());
 
-        ColaboradorEntity colaboradorEntity = new ColaboradorEntity();
-
-        colaboradorEntity.setNome(colaboradorDTO.getNmColaborador());
-
-        colaboradorRepository.save(colaboradorEntity);
-    }
-
-    // Read
-
-    public List<ColaboradorDTO> listarColaboradores() {
-
-        List<ColaboradorEntity> listaColaboradorEntity = colaboradorRepository.findAll();
-        List<ColaboradorDTO> listaColaboradorDTO = new ArrayList<>();
-
-        for (ColaboradorEntity c : listaColaboradorEntity) {
-
-            ColaboradorDTO colaboradorDTO = new ColaboradorDTO();
-
-            colaboradorDTO.setIdColaborador(c.getId());
-            colaboradorDTO.setNmColaborador(c.getNome());
-
-            listaColaboradorDTO.add(colaboradorDTO);
+        // Converte String → LocalDate
+        if (dto.getDataAdmissao() != null && !dto.getDataAdmissao().isEmpty()) {
+            entity.setDataAdmissao(LocalDate.parse(dto.getDataAdmissao()));
         }
 
-        return listaColaboradorDTO;
+        entity.setStatusAtivo(dto.isStatusAtivo());
+
+        colaboradorRepository.save(entity);
     }
 
-    // Uptade
+    // READ
+    public List<ColaboradorDTO> listarColaboradores() {
 
-    public void atualizarColaborador(int id, @Valid ColaboradorDTO colaboradorDTO) {
+        List<ColaboradorDTO> lista = new ArrayList<>();
 
-        ColaboradorEntity colaboradorEntity = colaboradorRepository.findById(id)
+        for (ColaboradorEntity c : colaboradorRepository.findAll()) {
+
+            ColaboradorDTO dto = new ColaboradorDTO();
+
+            dto.setIdColaborador(c.getId());
+            dto.setNmColaborador(c.getNome());
+            dto.setCpf(c.getCpf());
+            dto.setCargo(c.getCargo());
+            dto.setSetor(c.getSetor());
+
+            if (c.getDataAdmissao() != null) {
+                dto.setDataAdmissao(c.getDataAdmissao().toString());
+            }
+
+            dto.setStatusAtivo(Boolean.TRUE.equals(c.getStatusAtivo()));
+
+            lista.add(dto);
+        }
+
+        return lista;
+    }
+
+    // UPDATE
+    public void atualizarColaborador(int id, @Valid ColaboradorDTO dto) {
+
+        ColaboradorEntity entity = colaboradorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Colaborador não existe"));
 
-        colaboradorEntity.setNome(colaboradorDTO.getNmColaborador());
+        entity.setNome(dto.getNmColaborador());
+        entity.setCpf(dto.getCpf());
+        entity.setCargo(dto.getCargo());
+        entity.setSetor(dto.getSetor());
 
-        colaboradorRepository.save(colaboradorEntity);
+        if (dto.getDataAdmissao() != null && !dto.getDataAdmissao().isEmpty()) {
+            entity.setDataAdmissao(LocalDate.parse(dto.getDataAdmissao()));
+        }
+
+        entity.setStatusAtivo(dto.isStatusAtivo());
+
+        colaboradorRepository.save(entity);
     }
 
-    // Delete
-
+    // DELETE
     public void deletarColaborador(int id) {
 
-        ColaboradorEntity colaboradorEntity = colaboradorRepository.findById(id)
+        ColaboradorEntity entity = colaboradorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Colaborador não existe"));
 
-        colaboradorRepository.deleteById(id);
+        colaboradorRepository.delete(entity);
     }
+
 }
