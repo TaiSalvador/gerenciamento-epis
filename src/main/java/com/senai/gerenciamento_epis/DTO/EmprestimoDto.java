@@ -1,13 +1,16 @@
 package com.senai.gerenciamento_epis.DTO;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+
 public class EmprestimoDto {
 
     private Integer idEmprestimo;

@@ -69,9 +69,9 @@ public class Controller implements CommandLineRunner {
         } while (opcao != 0);
     }
 
-    // ================================
-    //           MENU COLABORADOR
-    // ================================
+
+    //           Menu Colaborador
+
     private void menuColaborador(Scanner sc) {
 
         int opcao;
@@ -126,6 +126,18 @@ public class Controller implements CommandLineRunner {
                     System.out.print("Novo nome: ");
                     c.setNmColaborador(sc.nextLine());
 
+                    System.out.print("Novo CPF: ");
+                    c.setCpf(sc.nextLine());
+
+                    System.out.print("Novo cargo: ");
+                    c.setCargo(sc.nextLine());
+
+                    System.out.print("Novo setor: ");
+                    c.setSetor(sc.nextLine());
+
+                    System.out.print("Nova data de admissão (AAAA-MM-DD): ");
+                    c.setDataAdmissao(sc.nextLine());
+
                     colaboradorService.atualizarColaborador(id, c);
                 }
 
@@ -139,9 +151,8 @@ public class Controller implements CommandLineRunner {
         } while (opcao != 0);
     }
 
-    // ================================
-    //             MENU EPI
-    // ================================
+    //             Menu EPI
+
     private void menuEpi(Scanner sc) {
 
         int opcao;
@@ -195,6 +206,21 @@ public class Controller implements CommandLineRunner {
                     System.out.print("Novo nome: ");
                     e.setNmEpi(sc.nextLine());
 
+                    System.out.print("Novo tipo: ");
+                    e.setTipoEpi(sc.nextLine());
+
+                    System.out.print("Nova descrição: ");
+                    e.setDescricao(sc.nextLine());
+
+                    System.out.print("Novo tamanho: ");
+                    e.setTamanho(sc.nextLine());
+
+                    System.out.print("Nova validade (AAAA-MM-DD): ");
+                    e.setValidade(sc.nextLine());
+
+                    System.out.print("Nova situação: ");
+                    e.setSituacao(sc.nextLine());
+
                     episService.atualizarEpi(id, e);
                 }
 
@@ -208,18 +234,17 @@ public class Controller implements CommandLineRunner {
         } while (opcao != 0);
     }
 
-    // ================================
-    //          MENU EMPRESTIMO
-    // ================================
+    //          Menu Emprestimo
+
     private void menuEmprestimo(Scanner sc) {
 
         int opcao;
 
         do {
             System.out.println("\n--- MENU EMPRÉSTIMO ---");
-            System.out.println("1 - Cadastrar");
+            System.out.println("1 - Empréstimo");
             System.out.println("2 - Listar");
-            System.out.println("3 - Atualizar / Devolver");
+            System.out.println("3 - Devolver");
             System.out.println("4 - Deletar");
             System.out.println("0 - Voltar");
             System.out.print("Opção: ");
